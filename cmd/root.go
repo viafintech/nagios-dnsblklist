@@ -85,7 +85,6 @@ var BlacklistServers = []string{
 	"multi.surbl.org",
 	"ix.dnsbl.manitu.net",
 	"tor.dan.me.uk",
-	"rbl.efnetrbl.org",
 	"relays.mail-abuse.org",
 	"blackholes.mail-abuse.org",
 	"rbl-plus.mail-abuse.org",
