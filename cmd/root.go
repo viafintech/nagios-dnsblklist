@@ -56,7 +56,6 @@ var BlacklistServers = []string{
 	"sbl.spamhaus.org",
 	"xbl.spamhaus.org",
 	"zen.spamhaus.org",
-	"bl.spamcannibal.org",
 	"psbl.surriel.com",
 	"ubl.unsubscore.com",
 	"dnsbl.njabl.org",
