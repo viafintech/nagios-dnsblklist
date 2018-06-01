@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.1] - 2018-06-01
+- Removed support for bl.spamcannibal.org (down) and rbl.suresupport.com (404)
+
 ## [1.0.0] - 2016-11-01
 - Check an ip if it is blacklisted
 - configure blacklistservers, timeout, verbosity and suppresscrit

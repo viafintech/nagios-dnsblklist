@@ -75,7 +75,6 @@ var BlacklistServers = []string{
 	"spamrbl.imp.ch",
 	"wormrbl.imp.ch",
 	"virbl.bit.nl",
-	"rbl.suresupport.com",
 	"dsn.rfc-ignorant.org",
 	"ips.backscatterer.org",
 	"spamguard.leadmon.net",
