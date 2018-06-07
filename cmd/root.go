@@ -21,19 +21,14 @@
 package cmd
 
 import (
-	"fmt"
+	"log"
 	"os"
 
-	"github.com/go-playground/log"
-	"github.com/go-playground/log/handlers/console"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
-	"github.com/Barzahlen/nagios-dnsblklist/logger"
 )
 
 var cfgFile string
-var Verbosity int
 var Timeout int
 var SuppressCrit bool
 var BlacklistServers = []string{
@@ -119,8 +114,8 @@ Current Version: 1.0.0`,
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(-1)
+		log.Println(err)
+		os.Exit(UNKNOWN)
 	}
 }
 
@@ -128,7 +123,6 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.nagios-dnsblklist.yaml)")
 	RootCmd.PersistentFlags().IntVarP(&Timeout, "timeout", "t", 30, "Pick a timeout in seconds")
-	RootCmd.PersistentFlags().IntVarP(&Verbosity, "verbosity", "v", 0, "Pick a verbosity level 0 = normal (default) and 1 = debug")
 	RootCmd.PersistentFlags().BoolVarP(&SuppressCrit, "suppresscrit", "s", false,
 		"Suppress critical message from the system and send warning instead.")
 }
@@ -147,22 +141,6 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		BlacklistServers = viper.GetStringSlice("blacklistServers")
 		Timeout = viper.GetInt("timeout")
-		Verbosity = viper.GetInt("verbosity")
 		SuppressCrit = viper.GetBool("suppresscrit")
-	}
-
-	consoleLog := console.New()
-	consoleLog.SetFormatFunc(logger.NagiosFormatFunc)
-	consoleLog.SetDisplayColor(false)
-
-	switch Verbosity {
-	case 0:
-		log.RegisterHandler(consoleLog, log.InfoLevel, log.WarnLevel, log.ErrorLevel, log.AlertLevel,
-			log.PanicLevel, log.FatalLevel)
-	case 1:
-		log.RegisterHandler(consoleLog, log.AllLevels...)
-	default:
-		log.RegisterHandler(consoleLog, log.InfoLevel, log.WarnLevel, log.ErrorLevel, log.PanicLevel,
-			log.FatalLevel)
 	}
 }

@@ -22,12 +22,12 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/go-playground/log"
 	"github.com/spf13/cobra"
 )
 
@@ -45,25 +45,28 @@ var checkCmd = &cobra.Command{
 * 2: it was found on a blacklist server
 * 3: an unknown error occured`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ip, error := isIpInputValid(args)
+		ip, error := isIPInputValid(args)
 		if error != OK {
-			log.Alert("Please specify a correct ip address.")
+			log.Println("Unknown: Please specify a correct ip address.")
 			os.Exit(UNKNOWN)
 		}
 
 		dnsInfoCollector := make(chan *dnsInfo)
 		defer close(dnsInfoCollector)
 
-		reversedIpString := reverseIpString(ip)
+		reversedIPString := reverseIPString(ip)
 
 		isTimeOut := startTimer()
 		defer close(isTimeOut)
 
 		dnsBlacklistCheckerCount := len(BlacklistServers)
-		log.Debug("Checking ", dnsBlacklistCheckerCount, " blacklist servers.")
 
 		for _, blacklistServer := range BlacklistServers {
-			go checkIpAgainstBlacklistDomain(dnsInfoCollector, blacklistServer, reversedIpString)
+			go checkIPAgainstBlacklistDomain(
+				dnsInfoCollector,
+				blacklistServer,
+				reversedIPString,
+			)
 		}
 
 		for {
@@ -71,28 +74,28 @@ var checkCmd = &cobra.Command{
 			case dnsInfoOutput := <-dnsInfoCollector:
 				switch dnsInfoOutput.returnCode {
 				case WARNING:
-					log.Warn(dnsInfoOutput.Message)
+					log.Println("Warning: ", dnsInfoOutput.Message)
 					os.Exit(WARNING)
 				case UNKNOWN:
-					log.Alert(dnsInfoOutput.Message)
+					log.Println("Unknown: ", dnsInfoOutput.Message)
 					os.Exit(UNKNOWN)
 				case CRITICAL:
 					if SuppressCrit {
-						log.Warn(dnsInfoOutput.Message)
+						log.Println("Warning: ", dnsInfoOutput.Message)
 						os.Exit(WARNING)
 					} else {
-						log.Error(dnsInfoOutput.Message)
+						log.Println("Critical: ", dnsInfoOutput.Message)
 						os.Exit(CRITICAL)
 					}
 				case OK:
-					dnsBlacklistCheckerCount -= 1
+					dnsBlacklistCheckerCount--
 				}
 			case <-isTimeOut:
-				log.Warn(fmt.Sprintf("Timeout is reached but %d dns blacklist crawler were still working.", dnsBlacklistCheckerCount))
+				log.Printf("Warning: Timeout is reached but %d dns blacklist crawler were still working.\n", dnsBlacklistCheckerCount)
 				os.Exit(WARNING)
 			default:
 				if dnsBlacklistCheckerCount <= 1 {
-					log.Info("The IP isn't blacklisted.")
+					log.Println("Ok: The IP isn't blacklisted.")
 					os.Exit(OK)
 				}
 			}
@@ -102,55 +105,51 @@ var checkCmd = &cobra.Command{
 
 func startTimer() chan bool {
 	isTimerOver := make(chan bool, 1)
-	log.Debug("Starting timer with ", Timeout, " seconds.")
 	go func() {
 		time.Sleep(time.Duration(Timeout) * time.Second)
-		log.Debug("The Timer reached it's end after ", Timeout, " and informs the main proc.")
 		isTimerOver <- true
 	}()
 	return isTimerOver
 }
 
-func isIpInputValid(input []string) (net.IP, int) {
+func isIPInputValid(input []string) (net.IP, int) {
 	if len(input) <= 0 {
-		log.Debug("An argument wasn't supplied.")
 		return nil, WARNING
 	}
-	parsedIp := net.ParseIP(input[0]).To4()
-	if parsedIp == nil {
-		log.Debug("The IP address turned out to be not valid.")
+	parsedIP := net.ParseIP(input[0]).To4()
+	if parsedIP == nil {
 		return nil, WARNING
 	}
-	return parsedIp, OK
+	return parsedIP, OK
 }
 
-func reverseIpString(ip net.IP) string {
-	ip_components := strings.Split(ip.String(), ".")
-	reversedIpAddress := fmt.Sprintf("%s.%s.%s.%s", ip_components[3], ip_components[2], ip_components[1],
-		ip_components[0])
-	log.Debug("Reversed Ip Address for testing is: ", reversedIpAddress)
-	return reversedIpAddress
+func reverseIPString(ip net.IP) string {
+	ipComponents := strings.Split(ip.String(), ".")
+	reversedIPAddress := fmt.Sprintf(
+		"%s.%s.%s.%s",
+		ipComponents[3],
+		ipComponents[2],
+		ipComponents[1],
+		ipComponents[0],
+	)
+	return reversedIPAddress
 }
 
-func checkIpAgainstBlacklistDomain(ret chan *dnsInfo, blacklistDomain string, reversedIpAddress string) {
-	log.Debug("Checking ", reversedIpAddress, " against ", blacklistDomain)
-	ns_records, err := net.LookupHost(fmt.Sprintf("%s.%s", reversedIpAddress, blacklistDomain))
+func checkIPAgainstBlacklistDomain(ret chan *dnsInfo, blacklistDomain string, reversedIPAddress string) {
+	nsRecords, err := net.LookupHost(fmt.Sprintf("%s.%s", reversedIPAddress, blacklistDomain))
 
-	log.Debug(reversedIpAddress, ".", blacklistDomain, ": Lookup host finished. Starting to interpret outcome.")
 	nerr, ok := err.(*net.DNSError)
 
-	if ok && nerr.Err == "no such host" && len(ns_records) == 0 {
-		ret <- &dnsInfo{OK, fmt.Sprintf("%s is not listed on blacklistdomain:%s", reversedIpAddress, blacklistDomain)}
+	if ok && nerr.Err == "no such host" && len(nsRecords) == 0 {
+		ret <- &dnsInfo{OK, fmt.Sprintf("%s is not listed on blacklistdomain:%s", reversedIPAddress, blacklistDomain)}
 	} else if ok && nerr.Timeout() {
 		ret <- &dnsInfo{WARNING, err.Error()}
 	} else if ok && nerr.Temporary() {
 		ret <- &dnsInfo{UNKNOWN, fmt.Sprintf("A temporary failure was detected with error: %s", err.Error())}
 	} else {
 		ret <- &dnsInfo{CRITICAL, fmt.Sprintf("%s is listed on the blacklist with domain %s by %s",
-			reversedIpAddress, blacklistDomain, ns_records)}
+			reversedIPAddress, blacklistDomain, nsRecords)}
 	}
-
-	log.Debug("Checking ", reversedIpAddress, ".", blacklistDomain, " finished.")
 }
 
 func init() {
