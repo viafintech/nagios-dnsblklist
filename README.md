@@ -6,6 +6,9 @@ Dnsblklist Check is a golang-based blacklist ip (mail-server ip) check.
 Just clone the repo and built it with
 
     go build # or go install
+    # Run the following two lines to build it for linux/amd64 and mac
+    go get github.com/mitchellh/gox
+    gox -osarch="linux/amd64 darwin/amd64" -ldflags="-s -w"
 
 ### Resolver
 
