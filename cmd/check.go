@@ -141,14 +141,38 @@ func checkIPAgainstBlacklistDomain(ret chan *dnsInfo, blacklistDomain string, re
 	nerr, ok := err.(*net.DNSError)
 
 	if ok && nerr.Err == "no such host" && len(nsRecords) == 0 {
-		ret <- &dnsInfo{OK, fmt.Sprintf("%s is not listed on blacklistdomain:%s", reversedIPAddress, blacklistDomain)}
+		ret <- &dnsInfo{
+			OK,
+			fmt.Sprintf(
+				"%s is not listed on blacklistdomain:%s",
+				reversedIPAddress,
+				blacklistDomain,
+			),
+		}
 	} else if ok && nerr.Timeout() {
-		ret <- &dnsInfo{WARNING, err.Error()}
+		ret <- &dnsInfo{
+			WARNING,
+			err.Error(),
+		}
 	} else if ok && nerr.Temporary() {
-		ret <- &dnsInfo{UNKNOWN, fmt.Sprintf("A temporary failure was detected with error: %s", err.Error())}
+		ret <- &dnsInfo{
+			UNKNOWN,
+			fmt.Sprintf(
+				"A temporary failure was detected with error: %s",
+				err.Error(),
+			),
+		}
 	} else {
-		ret <- &dnsInfo{CRITICAL, fmt.Sprintf("%s is listed on the blacklist with domain %s by %s",
-			reversedIPAddress, blacklistDomain, nsRecords)}
+		ret <- &dnsInfo{
+			CRITICAL,
+			fmt.Sprintf(
+				"%s is listed on the blacklist with domain %s by %s with error: %s",
+				reversedIPAddress,
+				blacklistDomain,
+				nsRecords,
+				nerr.Err,
+			),
+		}
 	}
 }
 
