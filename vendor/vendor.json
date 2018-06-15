@@ -1,6 +1,19 @@
 {
 	"comment": "",
 	"ignore": "test",
-	"package": [],
+	"package": [
+		{
+			"checksumSHA1": "VWjc6cY5hikPNMqEQwXLLbedqRk=",
+			"path": "github.com/Barzahlen/nagios-dnsblklist",
+			"revision": "1035d2c769c6d72ecb9d56a7c0105eb510becca1",
+			"revisionTime": "2018-06-14T19:37:14Z"
+		},
+		{
+			"checksumSHA1": "fW986X9ukV3tiPBH1FmDX2MDZig=",
+			"path": "github.com/Barzahlen/nagios-dnsblklist/cmd",
+			"revision": "1035d2c769c6d72ecb9d56a7c0105eb510becca1",
+			"revisionTime": "2018-06-14T19:37:14Z"
+		}
+	],
 	"rootPath": "github.com/Barzahlen/nagios-dnsblklist"
 }
