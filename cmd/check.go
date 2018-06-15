@@ -166,11 +166,10 @@ func checkIPAgainstBlacklistDomain(ret chan *dnsInfo, blacklistDomain string, re
 		ret <- &dnsInfo{
 			CRITICAL,
 			fmt.Sprintf(
-				"%s is listed on the blacklist with domain %s by %s with error: %s",
+				"%s is listed on the blacklist with domain %s by %s",
 				reversedIPAddress,
 				blacklistDomain,
 				nsRecords,
-				nerr.Err,
 			),
 		}
 	}
