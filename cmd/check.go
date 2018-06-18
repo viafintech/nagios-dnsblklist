@@ -21,9 +21,12 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net"
+	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -34,6 +37,10 @@ import (
 type dnsInfo struct {
 	returnCode int
 	Message    string
+}
+
+type cloudflareDNSResponse struct {
+	Status int
 }
 
 var checkCmd = &cobra.Command{
@@ -91,7 +98,10 @@ var checkCmd = &cobra.Command{
 					dnsBlacklistCheckerCount--
 				}
 			case <-isTimeOut:
-				log.Printf("Warning: Timeout is reached but %d dns blacklist crawler were still working.\n", dnsBlacklistCheckerCount)
+				log.Printf(
+					"Warning: Timeout is reached but %d dns blacklist crawler were still working.\n",
+					dnsBlacklistCheckerCount,
+				)
 				os.Exit(WARNING)
 			default:
 				if dnsBlacklistCheckerCount <= 1 {
@@ -136,11 +146,78 @@ func reverseIPString(ip net.IP) string {
 }
 
 func checkIPAgainstBlacklistDomain(ret chan *dnsInfo, blacklistDomain string, reversedIPAddress string) {
-	nsRecords, err := net.LookupHost(fmt.Sprintf("%s.%s", reversedIPAddress, blacklistDomain))
+	client := &http.Client{}
 
-	nerr, ok := err.(*net.DNSError)
+	url := fmt.Sprintf(
+		"https://cloudflare-dns.com/dns-query?name=%s.%s&type=A",
+		reversedIPAddress,
+		blacklistDomain,
+	)
 
-	if ok && nerr.Err == "no such host" && len(nsRecords) == 0 {
+	dnsReq, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		ret <- &dnsInfo{
+			WARNING,
+			fmt.Sprintf(
+				"Failed to create new dns request: %s",
+				err.Error(),
+			),
+		}
+	}
+
+	dnsReq.Header.Add("Accept", "application/dns-json")
+
+	dnsResp, err := client.Do(dnsReq)
+
+	if err != nil {
+		ret <- &dnsInfo{
+			WARNING,
+			fmt.Sprintf(
+				"The dnssec request failed with: %s",
+				err.Error(),
+			),
+		}
+	}
+
+	defer dnsResp.Body.Close()
+
+	respBody, err := ioutil.ReadAll(dnsResp.Body)
+
+	if err != nil {
+		ret <- &dnsInfo{
+			WARNING,
+			fmt.Sprintf(
+				"Parsing the dns body failed: %s",
+				err.Error(),
+			),
+		}
+	}
+
+	var dnsData cloudflareDNSResponse
+	err = json.Unmarshal(respBody, &dnsData)
+
+	if err != nil {
+		ret <- &dnsInfo{
+			WARNING,
+			fmt.Sprintf(
+				"Unmarshalling the dns request failed: %s",
+				err.Error(),
+			),
+		}
+	}
+
+	switch dnsData.Status {
+	case 0:
+		ret <- &dnsInfo{
+			CRITICAL,
+			fmt.Sprintf(
+				"%s is listed on the blacklist with domain %s",
+				reversedIPAddress,
+				blacklistDomain,
+			),
+		}
+	case 2, 3:
 		ret <- &dnsInfo{
 			OK,
 			fmt.Sprintf(
@@ -149,27 +226,12 @@ func checkIPAgainstBlacklistDomain(ret chan *dnsInfo, blacklistDomain string, re
 				blacklistDomain,
 			),
 		}
-	} else if ok && nerr.Timeout() {
-		ret <- &dnsInfo{
-			WARNING,
-			err.Error(),
-		}
-	} else if ok && nerr.Temporary() {
+	default:
 		ret <- &dnsInfo{
 			UNKNOWN,
 			fmt.Sprintf(
-				"A temporary failure was detected with error: %s",
-				err.Error(),
-			),
-		}
-	} else {
-		ret <- &dnsInfo{
-			CRITICAL,
-			fmt.Sprintf(
-				"%s is listed on the blacklist with domain %s by %s",
-				reversedIPAddress,
-				blacklistDomain,
-				nsRecords,
+				"Check the official RCODE's of DNS Requests: %d",
+				dnsData.Status,
 			),
 		}
 	}
