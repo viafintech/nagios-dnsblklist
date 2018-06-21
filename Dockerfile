@@ -7,5 +7,3 @@ ADD . /go/src/$GOPACKAGE
 WORKDIR /go/src/$GOPACKAGE
 
 RUN go get github.com/mitchellh/gox
-
-CMD gox -osarch="linux/amd64 darwin/amd64" -ldflags="-s -w"
