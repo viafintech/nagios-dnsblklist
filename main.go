@@ -1,4 +1,4 @@
-// Copyright © 2016 David Leib <david.leib@barzahlen.de>
+// Copyright © 2018 David Leib <david.leib@barzahlen.de>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,5 +23,5 @@ package main
 import "github.com/Barzahlen/nagios-dnsblklist/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }
