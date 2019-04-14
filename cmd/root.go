@@ -40,7 +40,6 @@ var BlacklistServers = []string{
 	"blacklist.woody.ch",
 	"bogons.cymru.com",
 	"cbl.abuseat.org",
-	"cdl.anti-spam.org.cn",
 	"combined.abuse.ch",
 	"db.wpbl.info",
 	"dnsbl-1.uceprotect.net",
@@ -105,7 +104,7 @@ ip-address is listed on a blacklist server.
 
 The ip-address is checked against a list of all relevant blacklist servers.
 
-Current Version: 2.0.0`,
+Current Version: 2.0.1`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
