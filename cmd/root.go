@@ -35,7 +35,6 @@ var BlacklistServers = []string{
 	"all.s5h.net",
 	"b.barracudacentral.org",
 	"bl.emailbasura.org",
-	"bl.spamcannibal.org",
 	"bl.spamcop.net",
 	"blacklist.woody.ch",
 	"bogons.cymru.com",
