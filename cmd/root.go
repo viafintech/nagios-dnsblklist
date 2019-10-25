@@ -1,4 +1,4 @@
-// Copyright © 2018 David Leib <david.leib@barzahlen.de>
+// Copyright © 2018-2019 Cash Payment Solutions GmbH
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -103,7 +103,7 @@ ip-address is listed on a blacklist server.
 
 The ip-address is checked against a list of all relevant blacklist servers.
 
-Current Version: 2.0.1`,
+Current Version: 2.0.3`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
