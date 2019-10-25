@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.3] - 2019-10-25
+- Updated Go version to 1.13.3
+- Updated license and copyright information
+
 ## [2.0.2] - 2019-06-03
 - Removed bl.spamcannibal.org due to unreachability/unrealiability
 - Updated Go version from 1.12.4 to 1.12.5
