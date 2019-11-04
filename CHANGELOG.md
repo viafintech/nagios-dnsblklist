@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.4] - 2019-11-04
+- Removed [bl.emailbasura.org](https://www.dnsbl.info/emailbasura-offline.php)
+- Updated Go version to 1.13.4
+
 ## [2.0.3] - 2019-10-25
 - Updated Go version to 1.13.3
 - Updated license and copyright information

@@ -34,7 +34,6 @@ var SuppressCrit bool
 var BlacklistServers = []string{
 	"all.s5h.net",
 	"b.barracudacentral.org",
-	"bl.emailbasura.org",
 	"bl.spamcop.net",
 	"blacklist.woody.ch",
 	"bogons.cymru.com",
@@ -103,7 +102,7 @@ ip-address is listed on a blacklist server.
 
 The ip-address is checked against a list of all relevant blacklist servers.
 
-Current Version: 2.0.3`,
+Current Version: 2.0.4`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
