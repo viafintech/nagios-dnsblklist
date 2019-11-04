@@ -1,4 +1,4 @@
-FROM golang:1.13.3
+FROM golang:1.13.4
 
 ENV GOPACKAGE github.com/Barzahlen/nagios-dnsblklist
 
