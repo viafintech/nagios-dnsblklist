@@ -1,4 +1,4 @@
-// Copyright © 2018-2019 Cash Payment Solutions GmbH
+// Copyright © 2018-2020 Cash Payment Solutions GmbH
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,6 @@ var BlacklistServers = []string{
 	"duinv.aupads.org",
 	"dul.dnsbl.sorbs.net",
 	"dyna.spamrats.com",
-	"dynip.rothen.com",
 	"http.dnsbl.sorbs.net",
 	"ips.backscatterer.org",
 	"ix.dnsbl.manitu.net",
@@ -102,7 +101,7 @@ ip-address is listed on a blacklist server.
 
 The ip-address is checked against a list of all relevant blacklist servers.
 
-Current Version: 2.0.4`,
+Current Version: 2.0.5`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
