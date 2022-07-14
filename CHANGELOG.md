@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.6] - 2022-07-14
+- Removed [cbl.abuseat.org](https://www.abuseat.org/)
+- Updated Go version to 1.18.4
+
 ## [2.0.5] - 2020-09-30
 - Removed [dynip.rothen.com](https://www.dnsbl.info/dnsbl-details.php?dnsbl=dynip.rothen.com)
 - Updated Go version to 1.15.2
