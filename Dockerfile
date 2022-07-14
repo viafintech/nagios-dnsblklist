@@ -6,4 +6,4 @@ ADD . /go/src/$GOPACKAGE
 
 WORKDIR /go/src/$GOPACKAGE
 
-RUN go get github.com/mitchellh/gox
+RUN go install github.com/mitchellh/gox@latest

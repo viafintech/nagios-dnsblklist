@@ -1,0 +1,62 @@
+# github.com/BurntSushi/toml v1.1.0
+## explicit; go 1.16
+# github.com/davecgh/go-spew v1.1.1
+## explicit
+# github.com/fsnotify/fsnotify v1.4.7
+## explicit
+github.com/fsnotify/fsnotify
+# github.com/hashicorp/hcl v0.0.0-20180404174102-ef8a98b0bbce
+## explicit
+github.com/hashicorp/hcl
+github.com/hashicorp/hcl/hcl/ast
+github.com/hashicorp/hcl/hcl/parser
+github.com/hashicorp/hcl/hcl/printer
+github.com/hashicorp/hcl/hcl/scanner
+github.com/hashicorp/hcl/hcl/strconv
+github.com/hashicorp/hcl/hcl/token
+github.com/hashicorp/hcl/json/parser
+github.com/hashicorp/hcl/json/scanner
+github.com/hashicorp/hcl/json/token
+# github.com/inconshreveable/mousetrap v1.0.0
+## explicit
+github.com/inconshreveable/mousetrap
+# github.com/magiconair/properties v1.8.0
+## explicit
+github.com/magiconair/properties
+# github.com/mitchellh/mapstructure v0.0.0-20180511142126-bb74f1db0675
+## explicit
+github.com/mitchellh/mapstructure
+# github.com/pelletier/go-toml v1.2.0
+## explicit
+github.com/pelletier/go-toml
+# github.com/spf13/afero v1.1.1
+## explicit
+github.com/spf13/afero
+github.com/spf13/afero/mem
+# github.com/spf13/cast v1.2.0
+## explicit
+github.com/spf13/cast
+# github.com/spf13/cobra v0.0.4-0.20180531180338-1e58aa3361fd
+## explicit
+github.com/spf13/cobra
+# github.com/spf13/jwalterweatherman v0.0.0-20180109140146-7c0cea34c8ec
+## explicit
+github.com/spf13/jwalterweatherman
+# github.com/spf13/pflag v1.0.2-0.20180601132542-3ebe029320b2
+## explicit
+github.com/spf13/pflag
+# github.com/spf13/viper v1.0.3-0.20180507071007-15738813a09d
+## explicit
+github.com/spf13/viper
+# github.com/stretchr/testify v1.8.0
+## explicit; go 1.13
+# golang.org/x/sys v0.0.0-20171025085633-e82597366816
+## explicit
+golang.org/x/sys/unix
+# golang.org/x/text v0.3.1-0.20180323135613-ab48842968a6
+## explicit
+golang.org/x/text/transform
+golang.org/x/text/unicode/norm
+# gopkg.in/yaml.v2 v2.2.1
+## explicit
+gopkg.in/yaml.v2
