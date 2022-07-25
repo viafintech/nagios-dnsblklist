@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.7] - 2022-07-25
+- Remove sbl./pbl./xbl.spamhaus.org DNSBLs in favor of [zen.spamhaus.org](https://www.spamhaus.org/zen/) which combines answers for all of them
+
 ## [2.0.6] - 2022-07-14
 - Removed [cbl.abuseat.org](https://www.abuseat.org/)
 - Updated Go version to 1.18.4
