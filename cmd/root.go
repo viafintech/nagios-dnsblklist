@@ -58,12 +58,10 @@ var BlacklistServers = []string{
 	"misc.dnsbl.sorbs.net",
 	"noptr.spamrats.com",
 	"orvedb.aupads.org",
-	"pbl.spamhaus.org",
 	"proxy.bl.gweep.ca",
 	"psbl.surriel.com",
 	"relays.bl.gweep.ca",
 	"relays.nether.net",
-	"sbl.spamhaus.org",
 	"short.rbl.jp",
 	"singular.ttk.pte.hu",
 	"smtp.dnsbl.sorbs.net",
@@ -80,7 +78,6 @@ var BlacklistServers = []string{
 	"virus.rbl.jp",
 	"web.dnsbl.sorbs.net",
 	"wormrbl.imp.ch",
-	"xbl.spamhaus.org",
 	"z.mailspike.net",
 	"zen.spamhaus.org",
 	"zombie.dnsbl.sorbs.net",
@@ -100,7 +97,7 @@ ip-address is listed on a blacklist server.
 
 The ip-address is checked against a list of all relevant blacklist servers.
 
-Current Version: 2.0.6`,
+Current Version: 2.0.7`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
